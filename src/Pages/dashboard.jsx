@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../Components/Header";
 import { Box, Flex, Text, SimpleGrid } from "@chakra-ui/react";
 import UserCard from "../Components/UserCard";
+import ProfileCard from "../Components/ProfileCard";
 
 export default function Dashboard() {
   const users = [
@@ -20,10 +21,12 @@ export default function Dashboard() {
   };
 
   return (
-    <Box height="100vh" bgColor="contrast.200" w="full">
+    <Box height="100vh" bgColor="contrast.200" w="full" pt={10}>
       <Header />
+
       <Box px={20} py={8}>
-        <Flex alignItems="center" justifyContent="space-between" mt={10}>
+        <ProfileCard user={users[0]} />
+        <Flex alignItems="center" justifyContent="space-between" mt={5}>
           <Flex>
             <Text fontWeight="600">List Of Doctors</Text>
             <Text color="primary.500">({users.length})</Text>

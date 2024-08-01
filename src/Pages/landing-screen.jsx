@@ -14,7 +14,7 @@ export default function landingScreen() {
             <br /> Care
           </Text>
           <Flex align="center" justify="flex-start" gap={5} mt={10}>
-            <Link to="/login?role=doctor">
+            <Link to="/login?role=patient">
               <Button
                 px={5}
                 py={2.5}

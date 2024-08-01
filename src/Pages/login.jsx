@@ -106,7 +106,7 @@ export default function Login() {
           </Button>
           <Text textAlign="right" fontSize="xs" mt={1}>
             Not registered yet?
-            <Link to="/signup" style={{ color: "#38B2AC" }}>
+            <Link to={`/signup?role=${role}`} style={{ color: "#38B2AC" }}>
               Sign up
             </Link>
           </Text>
