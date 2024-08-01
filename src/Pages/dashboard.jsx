@@ -32,10 +32,10 @@ export default function Dashboard() {
     getUsers();
   }, [role]);
 
-  const handleConsult = (doctorName) => {
-    // Use navigate() to change route
-    navigate("/consultant", { state: { doctorName } }); // Pass along any additional state if needed
-  };
+  const handleConsult = (user) => {  
+    console.log(user);
+    navigate("/consultant", { state: { user } }); // Pass along any additional state if needed  
+  };  
 
   return (
     <Box height="100vh" overflowY="auto" bgColor="contrast.200" w="full" pt={10}>
@@ -47,6 +47,7 @@ export default function Dashboard() {
             <Text fontWeight="600">List Of Doctors</Text>
             <Text color="primary.500">({userData.length})</Text>
           </Flex>
+  
 
           <Box
             bgColor="secondary.500"
@@ -63,7 +64,7 @@ export default function Dashboard() {
               key={index}
               name={user.name}
               title={user.specialty ? user.specialty : user.email}
-              onConsult={() => handleConsult(user)} // Pass the entire user object
+              onConsult={() => handleConsult(user)} 
               imageUrl={user.imageUrl}
             />
           ))}
