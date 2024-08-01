@@ -4,7 +4,7 @@ import { colors } from "./foundations/colors"
 import { breakpoints } from "./foundations/breakpoints"
 
 const config = {
-  initialColorMode: "dark",
+  initialColorMode: "light",
 }
 
 const theme = extendTheme({
