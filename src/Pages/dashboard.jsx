@@ -32,12 +32,12 @@ export default function Dashboard() {
     getUsers();
   }, [role]);
 
-  const handleConsult = (doctorName) => {
+  const handleConsult = (user) => {
     // Use navigate() to change route
     if (role === "doctor") {
-      navigate("/consultant", { state: { doctorName } });
+      navigate("/consultant", { state: { user } });
     } else if (role === "patient") {
-      navigate("/prescription", { state: { doctorName } });
+      navigate("/prescription", { state: { user } });
     }
   };
 
@@ -73,7 +73,7 @@ export default function Dashboard() {
               key={index}
               name={user.name}
               title={user.specialty ? user.specialty : user.email}
-              onConsult={() => handleConsult(user)} // Pass the entire user object
+              onConsult={() => handleConsult(user)}
               imageUrl={user.imageUrl}
               role={user.role}
             />
