@@ -3,10 +3,18 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./Styles/theme";
 import React from "react";
-import { Dashboard, Login, LandingScreen, Signup, Consultant } from "./Pages";
+import {
+  Dashboard,
+  Login,
+  LandingScreen,
+  Signup,
+  Consultant,
+  Prescription,
+} from "./Pages";
 import axios from "axios";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { AuthProvider } from "./services/context/AuthContext";
+
 function App() {
   React.useEffect(() => {
     axios
@@ -31,7 +39,22 @@ function App() {
                   </PrivateRoute>
                 }
               />
-              <Route path="/consultant" element={<Consultant />} />
+              <Route
+                path="/consultant"
+                element={
+                  <PrivateRoute>
+                    <Consultant />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/prescription"
+                element={
+                  <PrivateRoute>
+                    <Prescription />
+                  </PrivateRoute>
+                }
+              />
             </Routes>
           </CookiesProvider>
         </AuthProvider>

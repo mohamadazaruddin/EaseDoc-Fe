@@ -34,11 +34,21 @@ export default function Dashboard() {
 
   const handleConsult = (doctorName) => {
     // Use navigate() to change route
-    navigate("/consultant", { state: { doctorName } }); // Pass along any additional state if needed
+    if (role === "doctor") {
+      navigate("/consultant", { state: { doctorName } });
+    } else if (role === "patient") {
+      navigate("/prescription", { state: { doctorName } });
+    }
   };
 
   return (
-    <Box height="100vh" overflowY="auto" bgColor="contrast.200" w="full" pt={10}>
+    <Box
+      height="100vh"
+      overflowY="auto"
+      bgColor="contrast.200"
+      w="full"
+      pt={10}
+    >
       <Header />
       <Box px={20} py={8}>
         <ProfileCard user={cookies.user} />
@@ -65,6 +75,7 @@ export default function Dashboard() {
               title={user.specialty ? user.specialty : user.email}
               onConsult={() => handleConsult(user)} // Pass the entire user object
               imageUrl={user.imageUrl}
+              role={user.role}
             />
           ))}
         </SimpleGrid>

@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 export default function Consultant() {
   const location = useLocation();
   const user = location.state;
-    console.log(user,"user");
+  console.log(user, "user");
   return (
     <Box h="100vh" w="100%" bgColor="contrast.200" py="60px" px="80px">
       <Flex
@@ -25,7 +25,7 @@ export default function Consultant() {
         columnGap="20px"
       >
         <UserCard
-          name={user.doctorName}
+          name={user.doctorName.name}
           title="Eye Specialist"
           onConsult={() => {}}
         />
