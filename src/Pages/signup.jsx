@@ -1,37 +1,33 @@
-import React, { useState, useContext } from "react";
-import { Link, Navigate, useLocation } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  Heading,
-  Text,
-  Image,
-} from "@chakra-ui/react";
-import AuthContext from "../services/context/AuthContext";
-export default function Login() {
+import React from "react";
+
+export default function signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [viewpass, setViewpass] = useState(false);
-  const { login } = useContext(AuthContext);
-  const handleLogin = async (e) => {
+  const handlesubmit = (e) => {
     e.preventDefault();
-    login({ email, password });
+    setDisableButton(true);
+    axios
+      .post(`${process.env.REACT_APP_API_BASE_URL}/users/signup`, {
+        email: email,
+        password: password,
+      })
+      .then(function (response) {
+        login({
+          username: username,
+          password: password,
+        });
+        toast.success("Account Created Successfully", {
+          autoClose: 1000,
+        });
+      })
+      .catch(function (err) {
+        toast.error(`${err.response.data.message}`, {
+          autoClose: 3000,
+        });
+      });
   };
-  const [cookies] = useCookies(["user"]);
-  const location = useLocation();
-
-  const useQuery = () => {
-    return new URLSearchParams(location.search);
-  };
-  const query = useQuery();
-  const role = query.get("role");
-  return cookies.token ? (
-    <Navigate to="/dashboard" />
-  ) : (
+  return (
     <Box
       h="full"
       p={5}
@@ -51,7 +47,7 @@ export default function Login() {
         maxW="500px"
       >
         {/* Form */}
-        <form onSubmit={handleLogin} style={{ marginTop: "32px" }}>
+        <form onSubmit={handlesubmit} style={{ marginTop: "32px" }}>
           <Heading
             as="h2"
             size="md"
