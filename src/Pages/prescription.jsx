@@ -1,96 +1,224 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Textarea,
-  Text,
-  Box,
-  Spacer,
   Button,
+  Box,
+  GridItem,
+  Grid,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  ModalCloseButton,
+  FormControl,
+  FormLabel,
   Input,
-  Dat,
 } from "@chakra-ui/react";
+import axios from "axios";
 import UserCard from "../Components/UserCard";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Header from "../Components/Header";
+import { nullPlaceholder } from "../services/utils/nullPlaceholder";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Prescription() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = location.state;
-  console.log(user, "user");
+  console.log(user.user._id, "ddd");
+  const [formData, setFormData] = useState({
+    care_taken: "",
+    medicines: "",
+  });
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = async () => {
+    const prescription = {
+      consultation_id: user.user._id,
+      care_taken: formData.care_taken,
+      medicines: formData.medicines,
+    };
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/prescription`,
+        prescription
+      );
+      navigate("/dashboard");
+      toast.success("Prescription created", { autoClose: 1000 });
+      onClose();
+    } catch (error) {
+      toast.success("Something Went Wrong", { autoClose: 1000 });
+    }
+  };
+  const {
+    name,
+    email,
+    phone_number,
+    role,
+    history_of_illness,
+    history_of_surgery,
+  } = user.user.patient;
+
+  const { current_illness, family_history, allergies, others } = user.user;
   return (
-    <Box h="100vh" w="100%" bgColor="contrast.200" py="60px" px="80px">
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        w="100%"
-        columnGap="20px"
-      >
-        <UserCard
-          name={user.doctorName.name}
-          title="Eye Specialist"
-          onConsult={() => {}}
-        />
-        <Flex
-          alignItems="flex-start"
+    <Box
+      h="100vh"
+      w="100%"
+      overflowY="auto"
+      bgColor="contrast.200"
+      py="60px"
+      px="80px"
+    >
+      <Header />
+      <Flex justifyContent="space-between" w="100%" columnGap="20px" mt={10}>
+        <UserCard name={name} title={email} onConsult={() => {}} />
+        <Box
           w="80%"
           px="20px"
           py="30px"
-          h="280px"
+          textAlign="center"
           borderRadius="8px"
           border="1px solid #0000001A"
         >
-          <Box
-            borderWidth="1px"
-            borderRadius="lg"
-            overflow="hidden"
-            boxShadow="md"
-            p={4}
-            maxW="sm"
-            bg="white"
+          <Grid templateColumns="repeat(3, 1fr)" gap={6} textAlign="start">
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Name :
+              </Box>
+              {nullPlaceholder(name)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Email :
+              </Box>
+
+              {nullPlaceholder(email)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Phone Number :
+              </Box>
+              {nullPlaceholder(phone_number)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                History of Illness :
+              </Box>
+              {nullPlaceholder(history_of_illness)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                History of Surgery :
+              </Box>
+              {nullPlaceholder(history_of_surgery)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Current Illness :
+              </Box>
+              {nullPlaceholder(current_illness)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Family history :
+              </Box>
+              {nullPlaceholder(family_history)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Allergies :
+              </Box>
+              {nullPlaceholder(allergies)}
+            </GridItem>
+            <GridItem>
+              <Box as="span" fontWeight="semibold" mr={1}>
+                Others :
+              </Box>
+              {nullPlaceholder(others)}
+            </GridItem>
+          </Grid>
+          <Button
+            bgColor="#071A34"
+            color="#fff"
+            borderRadius="full"
+            py={2}
+            px={10}
+            fontWeight="medium"
+            onClick={onOpen}
+            mt={10}
           >
-            {/* Profile Picture */}
-            <HStack mb={4} spacing={4}>
-              <Image
-                borderRadius="full"
-                boxSize="100px"
-                src="https://via.placeholder.com/100" // Placeholder or actual URL
-                alt={user.name}
-                objectFit="cover"
-              />
-              <VStack align="start" spacing={1}>
-                <Text fontWeight="bold" fontSize="lg">
-                  {user.name}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  {user.email}
-                </Text>
-                <Text fontSize="sm" color="gray.600">
-                  <b>Phone:</b> {user.phone_number}
-                </Text>
-              </VStack>
-            </HStack>
-
-            {/* Role */}
-            <Text mb={2}>
-              <b>Role:</b> {user.role}
-            </Text>
-
-            {/* History */}
-            <Divider my={2} />
-            <Stack spacing={1} align="start">
-              {user.history_of_surgery && (
-                <Text>
-                  <b>History of Surgery:</b> {user.history_of_surgery}
-                </Text>
-              )}
-              {user.history_of_illness && (
-                <Text>
-                  <b>History of Illness:</b> {user.history_of_illness}
-                </Text>
-              )}
-            </Stack>
-          </Box>
-        </Flex>
+            Create Prescription
+          </Button>
+        </Box>
       </Flex>
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader> Create Prescription</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl mb={4}>
+              <FormLabel>Care Taken</FormLabel>
+              <Input
+                type="text"
+                name="care_taken"
+                value={formData.care_taken}
+                onChange={handleChange}
+                placeholder="Describe Care Taken"
+              />
+            </FormControl>
+            <FormControl mb={4}>
+              <FormLabel>Medicines</FormLabel>
+              <Input
+                type="text"
+                name="medicines"
+                value={formData.medicines}
+                onChange={handleChange}
+                placeholder="Enter Medicines Prescribed"
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              borderRadius="50px"
+              fontSize="sm"
+              fontWeight="normal"
+              py="2"
+              bgColor="contrast.200"
+              h="auto"
+              color="primary.500"
+              border="1px solid"
+              borderColor="primary.500"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+            <Button
+              ml="4"
+              borderRadius="50px"
+              fontSize="sm"
+              fontWeight="normal"
+              py="2"
+              bgColor="primary.500"
+              h="auto"
+              color="contrast.200"
+              onClick={handleSubmit}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }

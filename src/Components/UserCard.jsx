@@ -10,6 +10,7 @@ const UserCard = ({ name, title, onConsult, imageUrl, role }) => {
       p={4}
       textAlign="center"
       w="250px"
+      h="max-content"
     >
       <Avatar name={name} src={imageUrl} size="xl" mb={4} bg="gray.200" />
       <Text fontWeight="bold" fontSize="lg">
