@@ -5,18 +5,18 @@ import UserCard from "../Components/UserCard";
 import ProfileCard from "../Components/ProfileCard";
 import { useCookies } from "react-cookie";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 export default function Dashboard() {
   const [userData, setUserData] = useState([]);
   const [patientsData, setPatientsData] = useState([]);
   const [cookies] = useCookies(["user"]);
-  const role = cookies.user?.role; // Safe access using optional chaining
-  const navigate = useNavigate(); // Initialize useNavigate
+  const role = cookies.user?.role;
+  const navigate = useNavigate();
 
   // Fetch the user data
   const getUsers = async () => {
-    if (!role) return; // Exit if role is not defined
+    if (!role) return;
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_BASE_URL}/users?role=${role}`
