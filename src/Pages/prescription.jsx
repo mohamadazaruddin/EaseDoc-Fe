@@ -30,7 +30,6 @@ export default function Prescription() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user = location.state;
-  console.log(user.user._id, "ddd");
   const [formData, setFormData] = useState({
     care_taken: "",
     medicines: "",
@@ -56,7 +55,7 @@ export default function Prescription() {
       toast.success("Prescription created", { autoClose: 1000 });
       onClose();
     } catch (error) {
-      toast.success("Something Went Wrong", { autoClose: 1000 });
+      toast.error("Something Went Wrong", { autoClose: 1000 });
     }
   };
   const {

@@ -24,7 +24,9 @@ export default function Dashboard() {
 
       setUserData(response.data);
     } catch (err) {
-      console.log(err.response?.data?.message || err.message, "it is an error");
+      toast.error(err.response?.data?.message || err.message, {
+        autoClose: 1000,
+      });
     }
   };
   const getPatients = async () => {
@@ -36,12 +38,12 @@ export default function Dashboard() {
 
       setPatientsData(response.data);
     } catch (err) {
-      console.log(err.response?.data?.message || err.message, "it is an error");
+      toast.error(err.response?.data?.message || err.message, {
+        autoClose: 1000,
+      });
     }
   };
-  console.log(patientsData, "ddd", cookies.user);
 
-  // Call getLikes when the component mounts or role changes
   useEffect(() => {
     getUsers();
     if (role === "doctor") {
@@ -50,7 +52,6 @@ export default function Dashboard() {
   }, [role]);
 
   const handleConsult = (user) => {
-    console.log(role, "grgeg");
     // Use navigate() to change route
     if (role === "patient") {
       navigate("/consultant", { state: { user } });

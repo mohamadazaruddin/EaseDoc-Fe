@@ -79,7 +79,7 @@ export default function Consultant() {
       navigate("/dashboard");
       toast.success("Created Successfully", { autoClose: 1000 });
     } catch (error) {
-      toast.success("Something Went Wrong", { autoClose: 1000 });
+      toast.error("Something Went Wrong", { autoClose: 1000 });
     }
   };
   return (
